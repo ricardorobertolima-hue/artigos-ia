@@ -1,64 +1,71 @@
-🧠 Do Naive RAG ao Agentic RAG: o Guia Definitivo para Arquiteturas Modernas em 2026
-Introdução
+# 🧠 Do Naive RAG ao Agentic RAG: Arquiteturas Modernas para Sistemas de IA em 2026
 
-Retrieval-Augmented Generation (RAG) deixou de ser apenas um “truque” para reduzir alucinações de LLMs. Em 2026, RAG é infraestrutura crítica.
-Sistemas reais exigem precisão, autonomia, controle, observabilidade e capacidade de decisão — requisitos que o Naive RAG simplesmente não atende mais.
+## Autor
+Ricardo Roberto  
+Engenheiro de Dados | Engenheiro de IA Generativa | Arquiteto de Soluções em IA
 
-Este artigo apresenta uma visão completa e prática das arquiteturas modernas de RAG, explicando:
+---
 
-quando usar cada abordagem
+## 📌 Introdução
 
-quais problemas resolvem
+Retrieval-Augmented Generation (RAG) surgiu como uma solução prática para reduzir alucinações em Large Language Models (LLMs), conectando modelos generativos a fontes externas de conhecimento. Durante anos, o **Naive RAG** foi suficiente para provas de conceito e aplicações simples.
 
-como se estruturam
+Entretanto, **em 2026, esse modelo está obsoleto para sistemas reais**.
 
-trechos de código em Python para implementação real
+Organizações exigem hoje:
+- Precisão semântica
+- Autonomia operacional
+- Controle e validação das respostas
+- Capacidade de lidar com dados inconsistentes e dinâmicos
+- Integração com workflows complexos de negócio
 
-O foco é engenharia: o que funciona em produção.
+Este artigo apresenta uma **visão completa das arquiteturas modernas de RAG**, explicando:
+- características
+- casos de uso
+- vantagens e limitações
+- **exemplos práticos em Python**
 
-1️⃣ Naive RAG – O ponto de partida (e onde muitos ainda estão)
-O que é
+O foco é engenharia aplicada, não teoria abstrata.
 
-A forma mais simples de RAG:
+---
 
-Converter documentos em embeddings
+## 1️⃣ Naive RAG – O ponto de partida (e o limite)
 
-Armazenar em banco vetorial
+### 📖 O que é
 
-Recuperar os top-k documentos
+O Naive RAG é a forma mais simples de Retrieval-Augmented Generation. Ele combina:
+1. Embeddings de documentos
+2. Um banco de dados vetorial
+3. Recuperação dos *top-k* documentos
+4. Envio direto ao LLM
 
-Enviar tudo ao LLM
+### 🧠 Arquitetura
 
-Arquitetura
-Query → Embedding → Vector DB → Top-k → Prompt → LLM
+Usuário → Embedding → Vector DB → Top-k → Prompt → LLM
 
-Quando usar
 
-Provas de conceito (PoC)
+### ✅ Quando usar
+- Provas de conceito (PoC)
+- Demos educacionais
+- Protótipos rápidos
 
-Demos internas
+### ❌ Limitações
+- Recuperação superficial
+- Contextos irrelevantes
+- Nenhuma validação da resposta
+- Não lida bem com ambiguidade ou dados complexos
 
-Casos educacionais
+### 🧪 Exemplo em Python
 
-Limitações
-
-Recall fraco
-
-Contexto irrelevante
-
-Nenhum mecanismo de validação
-
-Nenhuma adaptação ao erro
-
-Exemplo em Python
+```python
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 
 docs = [
-    "O mercado livre de energia permite negociar contratos bilateralmente.",
-    "Consumidores podem escolher fornecedores no ACL."
+    "O mercado livre de energia permite negociação direta entre consumidores e fornecedores.",
+    "No ACL, contratos são firmados bilateralmente."
 ]
 
 embeddings = OpenAIEmbeddings()
@@ -71,23 +78,24 @@ qa = RetrievalQA.from_chain_type(
 
 print(qa.run("O que é o mercado livre de energia?"))
 
+📉 Conclusão: funcional, mas insuficiente para produção.
+2️⃣ Modular / Advanced RAG – O novo baseline
+📖 O que é
 
-👉 Importante: este modelo não escala semanticamente.
+O Modular RAG evolui o Naive RAG ao introduzir componentes especializados, permitindo controle fino do pipeline.
 
-2️⃣ Modular / Advanced RAG – O mínimo aceitável em produção
-O que é
+Principais módulos:
 
-Evolução direta do Naive RAG, adicionando módulos especializados:
+    Query Rewriting
 
-Query Rewriting
+    Chunking inteligente
 
-Filtros semânticos
+    Filtros semânticos
 
-Reranking
+    Reranking de resultados
 
-Chunking adaptativo
+🧠 Arquitetura
 
-Arquitetura
 Query
  ↓
 Query Rewriter
@@ -100,15 +108,16 @@ Context Builder
  ↓
 LLM
 
-Problemas que resolve
+✅ Problemas que resolve
 
-Recuperação irrelevante
+    Recall baixo
 
-Contextos superficiais
+    Contextos irrelevantes
 
-Baixa precisão semântica
+    Respostas genéricas
 
-Exemplo: RAG com Reranker
+🧪 Exemplo com Reranker
+
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import CrossEncoderReranker
 
@@ -122,32 +131,26 @@ compression_retriever = ContextualCompressionRetriever(
 )
 
 docs = compression_retriever.get_relevant_documents(
-    "Explique riscos no mercado livre de energia"
+    "Explique riscos financeiros no mercado livre de energia"
 )
 
+📌 Hoje, este é o mínimo aceitável em sistemas corporativos.
+3️⃣ GraphRAG – Conhecimento além de vetores
+📖 O que é
 
-👉 Esse é o baseline real para sistemas corporativos.
+GraphRAG combina LLMs com Grafos de Conhecimento, permitindo raciocínio baseado em relações, não apenas similaridade semântica.
+🧠 Casos de uso
 
-3️⃣ GraphRAG – Quando vetores não são suficientes
-O que é
+    Energia (contratos, agentes, usinas)
 
-GraphRAG combina LLMs + Grafos de Conhecimento para lidar com:
+    Saúde (paciente → exame → diagnóstico)
 
-Relações complexas
+    Jurídico (leis → precedentes → decisões)
 
-Dependências semânticas
+    Compliance e governança
 
-Dados inconsistentes (messy data)
+🧠 Arquitetura
 
-Exemplo de uso
-
-Energia (contratos, agentes, usinas)
-
-Saúde (paciente → exame → diagnóstico)
-
-Jurídico (leis → precedentes → decisões)
-
-Arquitetura
 Query
  ↓
 Entity Linking
@@ -158,7 +161,8 @@ Contextualização
  ↓
 LLM
 
-Exemplo em Python (Neo4j)
+🧪 Exemplo em Python (Neo4j)
+
 from neo4j import GraphDatabase
 
 driver = GraphDatabase.driver(
@@ -166,7 +170,7 @@ driver = GraphDatabase.driver(
     auth=("neo4j", "senha")
 )
 
-def get_context():
+def load_context():
     with driver.session() as session:
         result = session.run("""
         MATCH (c:Contrato)-[:ASSOCIADO_A]->(e:Empresa)
@@ -174,41 +178,34 @@ def get_context():
         """)
         return [r.data() for r in result]
 
-context = get_context()
+context = load_context()
 
+📌 O subgrafo retornado é usado como contexto estruturado para o LLM.
+4️⃣ CRAG / CAG – RAG com controle de qualidade
+📖 O que é
 
-O subgrafo vira o contexto passado ao LLM.
+Corrective RAG (CRAG) introduz verificação automática da resposta, garantindo que o conteúdo gerado seja sustentado pelo contexto recuperado.
+🧠 Arquitetura
 
-👉 GraphRAG não substitui RAG vetorial — ele complementa.
-
-4️⃣ CRAG / CAG – RAG que se corrige sozinho
-O que é
-
-Corrective RAG introduz verificação automática da resposta:
-
-valida se o contexto sustenta a resposta
-
-decide se deve refazer o retrieval
-
-Arquitetura
 Query → Retriever → LLM
                ↓
            Validator
                ↓
-         (Retry ou Aceita)
+       (Aceita ou Reprocessa)
 
-Quando usar
+✅ Quando usar
 
-Risco financeiro
+    Decisão financeira
 
-Compliance
+    Relatórios executivos
 
-Relatórios executivos
+    Compliance
 
-Decisão automatizada
+    Sistemas críticos
 
-Exemplo de verificação com LLM
-def validate(answer, context, llm):
+🧪 Exemplo de validação
+
+def validate_answer(answer, context, llm):
     prompt = f"""
     A resposta abaixo é correta com base no contexto?
 
@@ -222,36 +219,34 @@ def validate(answer, context, llm):
     """
     return llm.predict(prompt)
 
-if validate(answer, context, llm) == "NÃO":
-    print("Reprocessando retrieval...")
+if validate_answer(answer, context, llm) == "NÃO":
+    print("Reexecutando retrieval...")
 
+📌 CRAG reduz erros persistentes e aumenta confiabilidade.
+5️⃣ Agentic / Adaptive RAG – Autonomia real
+📖 O que é
 
-👉 CRAG é controle de qualidade semântico.
+Agentic RAG representa o estado da arte.
+Aqui, agentes decidem:
 
-5️⃣ Agentic / Adaptive RAG – O estado da arte
-O que é
+    quando buscar dados
 
-Aqui o RAG deixa de ser passivo.
-Agentes planejam, executam, avaliam e iteram.
+    onde buscar
 
-Capacidades
+    quando parar
 
-Decide se precisa buscar mais dados
+    como validar resultados
 
-Escolhe a fonte certa
+🧠 Arquitetura
 
-Reavalia resultados
-
-Executa workflows completos
-
-Arquitetura
 Planner Agent
    ↓
 Retriever Agent ↔ Critic Agent
    ↓
 Executor Agent
 
-Exemplo com LangGraph
+🧪 Exemplo com LangGraph
+
 from langgraph.graph import StateGraph
 
 def retrieve(state):
@@ -265,58 +260,62 @@ def critic(state):
 graph = StateGraph(dict)
 graph.add_node("retrieve", retrieve)
 graph.add_node("critic", critic)
+
 graph.set_entry_point("retrieve")
 graph.add_edge("retrieve", "critic")
 
 agent = graph.compile()
-agent.invoke({"question": "Melhor contrato de energia hoje?"})
+agent.invoke({"question": "Qual o melhor contrato de energia hoje?"})
 
+📌 Base para copilotos corporativos e automação cognitiva.
+6️⃣ Multi-Modal / Web-RAG – Dados vivos
+📖 O que é
 
-👉 Aqui nasce o verdadeiro AI Copilot corporativo.
+Multi-Modal RAG integra múltiplas fontes:
 
-6️⃣ Multi-Modal / Web-RAG – Dados vivos e não estruturados
-O que é
+    Texto
 
-Integra múltiplas fontes:
+    PDFs
 
-Texto
+    Imagens
 
-PDFs
+    Web em tempo real
 
-Imagens
+🧪 Exemplo de Web-RAG
 
-Web em tempo real
-
-Exemplo: Web-RAG
 from langchain.tools import DuckDuckGoSearchRun
 
 search = DuckDuckGoSearchRun()
 web_data = search.run("preço spot energia Brasil hoje")
 
-response = llm.predict(f"Use os dados abaixo:\n{web_data}")
+response = llm.predict(
+    f"Use os dados abaixo para responder:\n{web_data}"
+)
 
-
-👉 Essencial para mercado, risco, notícias e monitoramento.
-
-Comparativo Final
-Arquitetura	Complexidade	Uso ideal
+📌 Essencial para dados dinâmicos e análises de mercado.
+📊 Comparativo Geral
+Arquitetura	Complexidade	Uso Ideal
 Naive RAG	Baixa	PoC
 Modular RAG	Média	Produção
 GraphRAG	Alta	Conhecimento complexo
 CRAG	Média	Alta precisão
 Agentic RAG	Alta	Workflows reais
 Multi-Modal RAG	Média/Alta	Dados vivos
-Conclusão
+🔚 Conclusão
 
-Em 2026, RAG não é mais um componente isolado — é parte de uma arquitetura cognitiva.
-Soluções maduras combinam:
+Em 2026, RAG não é mais um componente isolado.
+Ele faz parte de arquiteturas cognitivas completas, combinando:
 
-Vetores + Grafos
+    Vetores + Grafos
 
-RAG + Agentes
+    RAG + Agentes
 
-Validação automática
+    Validação automática
 
-Autonomia controlada
+    Observabilidade
 
-👉 Quem ainda usa apenas Naive RAG está construindo sistemas frágeis.
+    Governança e controle
+
+👉 Sistemas que permanecem no Naive RAG são frágeis, imprecisos e não escalam.
+
+O futuro pertence a RAG autônomo, adaptativo e confiável.
