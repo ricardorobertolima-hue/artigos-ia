@@ -1,7 +1,7 @@
 # Agentes de IA com RAG Avançado e Skills  
 ## Arquiteturas Modernas, Técnicas Recentes e Aplicações em Produção
 
-**Autor:**  
+**Autor: Ricardo Roberto de Lima**  
 **Área:** Engenharia de IA, Sistemas Inteligentes, Arquiteturas Agentic  
 **Ano:** 2026  
 
