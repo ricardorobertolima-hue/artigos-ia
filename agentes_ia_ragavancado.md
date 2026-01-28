@@ -158,8 +158,11 @@ Exemplo de Handler (Python)
 def execute_sql_readonly(query: str):
     assert query.strip().lower().startswith("select")
     return db.execute(query)
+---
+
 Orquestração Agentic
 Padrão Planner → Executor → Verifier
+
 Planner: Decompõe o problema
 
 Executor: Invoca skills e RAG
@@ -167,6 +170,7 @@ Executor: Invoca skills e RAG
 Verifier: Valida factualidade e consistência
 
 Multiagentes
+
 Agente Pesquisador
 
 Agente Executor
@@ -185,6 +189,7 @@ Melhor governança
 
 Mitigação de Alucinações
 Estratégias
+
 Retrieval com score mínimo
 
 Evidência obrigatória
@@ -202,8 +207,10 @@ Resposta:
 
 Evidências:
 {{documents}}
+
 Avaliação e Métricas
 Métricas de RAG
+
 Recall@K
 
 MRR
@@ -211,6 +218,7 @@ MRR
 Coverage
 
 Métricas Agentic
+
 Task Success Rate
 
 Step Accuracy
@@ -221,6 +229,7 @@ Custo por execução
 
 Observabilidade
 Logs Essenciais
+
 Prompt completo
 
 Documentos recuperados
@@ -232,6 +241,7 @@ Skills invocadas
 Tokens e custo
 
 Integração
+
 OpenTelemetry
 
 Prometheus
@@ -241,6 +251,7 @@ Grafana
 ELK Stack
 
 Segurança e Governança
+
 Controle de acesso por skill
 
 PII masking
@@ -252,6 +263,7 @@ Sandboxing de execução
 Rate limiting
 
 CI/CD para Agentes
+
 Testes unitários de skills
 
 Testes de integração agentic
@@ -264,6 +276,7 @@ Rollback automático
 
 Casos de Uso
 1. Assistente Corporativo
+
 Consulta políticas internas
 
 Executa relatórios
@@ -271,6 +284,7 @@ Executa relatórios
 Gera respostas auditáveis
 
 2. Saúde
+
 Análise de exames
 
 RAG sobre protocolos clínicos
@@ -278,6 +292,7 @@ RAG sobre protocolos clínicos
 Skills para sistemas HL7/FHIR
 
 3. Engenharia de Software
+
 Leitura de código
 
 Execução de pipelines
@@ -285,6 +300,7 @@ Execução de pipelines
 Geração de documentação técnica
 
 Checklist de Produção
+
  RAG com re-ranking
 
  Skills versionadas
@@ -306,6 +322,7 @@ Checklist de Produção
  Plano de rollback
 
 Direções de Pesquisa
+
 Garantias formais em agentes
 
 Benchmarks padronizados
@@ -317,6 +334,7 @@ Skill learning automático
 Alignment multiagente
 
 Referências
+
 Lewis et al., Retrieval-Augmented Generation, Facebook AI
 
 Toolformer — Schick et al.
@@ -332,17 +350,4 @@ OpenAI Function Calling
 Anthropic Tool Use
 
 Surveys on Tool Learning with LLMs
-
-Resumo Final (Ações Prioritárias)
-▶️ Abandonar Naive RAG
-
-▶️ Adotar RAG Modular com re-ranking
-
-▶️ Implementar Skills governadas
-
-▶️ Usar agentes com verificação
-
-▶️ Medir tudo (retrieval + execução)
-
-▶️ Tratar IA como sistema crítico
 
