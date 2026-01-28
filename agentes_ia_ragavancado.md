@@ -160,45 +160,63 @@ def execute_sql_readonly(query: str):
     return db.execute(query)
 ---
 
-Orquestração Agentic
-Padrão Planner → Executor → Verifier
+# Orquestração Agentic, Avaliação e Governança em Sistemas de IA
 
-Planner: Decompõe o problema
+---
 
-Executor: Invoca skills e RAG
+## Orquestração Agentic
 
-Verifier: Valida factualidade e consistência
+### Padrão Planner → Executor → Verifier
 
-Multiagentes
+Este padrão organiza o fluxo de decisão e execução de agentes de IA, promovendo maior confiabilidade e controle.
 
-Agente Pesquisador
+- **Planner**  
+  Responsável por **decompor o problema**, definir subtarefas e planejar a sequência de ações.
 
-Agente Executor
+- **Executor**  
+  Executa o plano, **invocando skills**, ferramentas externas e pipelines de **RAG** conforme necessário.
 
-Agente Auditor
+- **Verifier**  
+  Avalia o resultado final, **validando factualidade, consistência e aderência às evidências** recuperadas.
 
-Agente Supervisor
+---
 
-Benefícios:
+## Arquitetura Multiagente
 
-Especialização
+### Tipos de Agentes
 
-Redução de erro
+- **Agente Pesquisador**  
+  Responsável pela recuperação de informações, consultas ao RAG e exploração de conhecimento.
 
-Melhor governança
+- **Agente Executor**  
+  Executa ações práticas, chamadas de APIs, skills e integrações com sistemas externos.
 
-Mitigação de Alucinações
-Estratégias
+- **Agente Auditor**  
+  Valida resultados, rastreia evidências, verifica compliance e detecta possíveis alucinações.
 
-Retrieval com score mínimo
+- **Agente Supervisor**  
+  Coordena os demais agentes, resolve conflitos e toma decisões de alto nível.
 
-Evidência obrigatória
+### Benefícios do Modelo Multiagente
 
-Verificação cruzada
+- Especialização de responsabilidades  
+- Redução significativa de erros e alucinações  
+- Melhor governança, rastreabilidade e auditoria  
 
-Prompts de validação
+---
 
-Prompt de Verificação
+## Mitigação de Alucinações
+
+### Estratégias Adotadas
+
+- Retrieval com **score mínimo de relevância**
+- Uso de **evidência obrigatória** para respostas
+- **Verificação cruzada** entre múltiplas fontes
+- Prompts explícitos de validação e checagem
+
+### Prompt de Verificação
+
+```text
 Verifique a resposta abaixo usando apenas as evidências fornecidas.
 Se não houver evidência suficiente, responda "Informação insuficiente".
 
@@ -208,146 +226,147 @@ Resposta:
 Evidências:
 {{documents}}
 
-Avaliação e Métricas
-Métricas de RAG
 
-Recall@K
+## Avaliação e Métricas
 
-MRR
+### Métricas de RAG
 
-Coverage
+- **Recall@K**  
+  Capacidade do sistema de recuperar documentos relevantes dentro dos *K* primeiros resultados.
 
-Métricas Agentic
+- **MRR (Mean Reciprocal Rank)**  
+  Mede a qualidade da ordenação dos resultados recuperados, considerando a posição do primeiro item relevante.
 
-Task Success Rate
+- **Coverage**  
+  Avalia a abrangência do conhecimento recuperado em relação ao domínio esperado.
 
-Step Accuracy
+---
 
-Latência por ação
+### Métricas Agentic
 
-Custo por execução
+- **Task Success Rate**  
+  Taxa de sucesso na execução completa das tarefas atribuídas ao agente.
 
-Observabilidade
-Logs Essenciais
+- **Step Accuracy**  
+  Precisão em cada etapa do plano definido pelo *Planner*.
 
-Prompt completo
+- **Latência por ação**  
+  Tempo médio necessário para execução de cada ação ou skill.
 
-Documentos recuperados
+- **Custo por execução**  
+  Consumo de tokens, chamadas a APIs e recursos computacionais.
 
-Scores de relevância
+---
 
-Skills invocadas
+## Observabilidade
 
-Tokens e custo
+### Logs Essenciais
 
-Integração
+- Prompt completo enviado ao modelo
+- Documentos recuperados pelo mecanismo de RAG
+- Scores de relevância e ranking dos documentos
+- Skills invocadas e seus parâmetros
+- Tokens utilizados e custo estimado por execução
 
-OpenTelemetry
+---
 
-Prometheus
+### Integração com Ferramentas
 
-Grafana
+- **OpenTelemetry**  
+  Rastreio distribuído e correlação de chamadas.
 
-ELK Stack
+- **Prometheus**  
+  Coleta e exposição de métricas.
 
-Segurança e Governança
+- **Grafana**  
+  Visualização de métricas, dashboards e alertas.
 
-Controle de acesso por skill
+- **ELK Stack (Elasticsearch, Logstash, Kibana)**  
+  Centralização, indexação e análise de logs.
 
-PII masking
+---
 
-Auditoria imutável
+## Segurança e Governança
 
-Sandboxing de execução
+- Controle de acesso por **skill**
+- **PII masking** e proteção de dados sensíveis
+- Auditoria imutável e rastreável
+- **Sandboxing** para execução segura de ações
+- **Rate limiting** e políticas de uso
 
-Rate limiting
+---
 
-CI/CD para Agentes
+## CI/CD para Agentes de IA
 
-Testes unitários de skills
+- Testes unitários de skills
+- Testes de integração agentic
+- **Canary deploy** para novas versões
+- Uso de **feature flags**
+- Rollback automático em caso de falhas
 
-Testes de integração agentic
+---
 
-Canary deploy
+## Casos de Uso
 
-Feature flags
+### 1. Assistente Corporativo
 
-Rollback automático
+- Consulta políticas internas
+- Executa relatórios automatizados
+- Gera respostas auditáveis e rastreáveis
 
-Casos de Uso
-1. Assistente Corporativo
+---
 
-Consulta políticas internas
+### 2. Saúde
 
-Executa relatórios
+- Análise automatizada de exames
+- RAG aplicado a protocolos clínicos
+- Skills integradas a sistemas **HL7/FHIR**
 
-Gera respostas auditáveis
+---
 
-2. Saúde
+### 3. Engenharia de Software
 
-Análise de exames
-
-RAG sobre protocolos clínicos
-
-Skills para sistemas HL7/FHIR
-
-3. Engenharia de Software
-
-Leitura de código
-
-Execução de pipelines
-
-Geração de documentação técnica
-
-Checklist de Produção
-
- RAG com re-ranking
-
- Skills versionadas
-
- Guardrails ativos
-
- Observabilidade completa
-
- Testes automatizados
-
- Governança de dados
-
- Auditoria
-
- Controle de custos
-
- Pipeline CI/CD
-
- Plano de rollback
-
-Direções de Pesquisa
-
-Garantias formais em agentes
-
-Benchmarks padronizados
-
-Auto-avaliação agentic
-
-Skill learning automático
-
-Alignment multiagente
-
-Referências
-
-Lewis et al., Retrieval-Augmented Generation, Facebook AI
-
-Toolformer — Schick et al.
-
-GraphRAG — Microsoft Research
-
-LangChain & LangGraph Docs
-
-LlamaIndex Advanced RAG
-
-OpenAI Function Calling
-
-Anthropic Tool Use
-
-Surveys on Tool Learning with LLMs
+- Leitura e análise de código-fonte
+- Execução de pipelines **CI/CD**
+- Geração automática de documentação técnica
+
+---
+
+## Checklist de Produção
+
+- [ ] RAG com re-ranking
+- [ ] Skills versionadas
+- [ ] Guardrails ativos
+- [ ] Observabilidade completa
+- [ ] Testes automatizados
+- [ ] Governança de dados
+- [ ] Auditoria
+- [ ] Controle de custos
+- [ ] Pipeline CI/CD
+- [ ] Plano de rollback
+
+---
+
+## Direções de Pesquisa
+
+- Garantias formais em sistemas agentic
+- Benchmarks padronizados para agentes
+- Auto-avaliação agentic
+- Aprendizado automático de skills
+- Alignment e coordenação multiagente
+
+---
+
+## Referências
+
+- Lewis et al., *Retrieval-Augmented Generation*, Facebook AI  
+- Schick et al., *Toolformer*  
+- *GraphRAG*, Microsoft Research  
+- LangChain & LangGraph Documentation  
+- *LlamaIndex Advanced RAG*  
+- OpenAI Function Calling  
+- Anthropic Tool Use  
+- Surveys on Tool Learning with LLMs  
+
+---
 
